@@ -23,7 +23,7 @@ class UpdateItemsRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:50',
-            'desc' => 'nullable|string',
+            'desc' => 'required|string',
             'price' => 'required|numeric|min:1|max:100',
             'total' => 'required|integer|min:1|max:25',
         ];

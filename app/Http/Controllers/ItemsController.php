@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Items;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Request;
 use App\Http\Requests\StoreItemsRequest;
 use App\Http\Requests\UpdateItemsRequest;
 
@@ -15,7 +16,7 @@ class ItemsController extends Controller
      */
     public function index()
     {
-        return view('items.index', ['items' => Items::latest()->paginate(10)]);
+        return view('items.index', ['items' => Items::paginate(10)]);
     }
 
     /**
@@ -57,42 +58,20 @@ class ItemsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateItemsRequest $request, Items $items) : RedirectResponse
+    public function update(UpdateItemsRequest $request, $id)
     {
-        // $item = Items::findOrFail($items->id);
-
-        // $item->name = $request->get('name');
-        // $item->desc = $request->get('desc');
-        // $item->price = $request->get('price');
-        // $item->total = $request->get('total');
-
-        // $item->save();
+        $item = Items::find('id');
+        // if ($item){
+            $item->name =  $request->name;
+            $item->desc =  $request->desc;
+            $item->price =  $request->price;
+            $item->total =  $request->total;
+            $item->save();
+    //     }else{
+    //         return response()->json(['error' => $item], 404);
+    //     }
         
-
-        // $item->update([
-
-        $interest = Items::where(['id' =>  $request->id])->first();
-
-    if ($interest) {
-        $interest->delete();
-    };           
-
-        Items::firstOrCreate([
-            'name' => $request->name,
-            'desc' => $request->desc,
-            'price' => $request->price,
-            'total' => $request->total,
-        ]);
-        // ]);
-
-        // $items->name = $request->name;
-        // $items->desc = $request->desc;
-        // $items->price = $request->price;
-        // $items->total = $request->total;
- 
-        // $item->save();
-
-        return redirect()->route('items.index')->with('success','update');
+        return redirect()->route('item.index')->with('success','update');
     }
 
     /**
